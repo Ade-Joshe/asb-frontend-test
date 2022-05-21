@@ -1,38 +1,288 @@
 .App {
-  text-align: center;
+  position: relative;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding-left: 18px;
+  padding-right: 18px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+header {
+  position: sticky;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  top: 0;
+  width: 100%;
+  padding: 0 2rem;
+  border-bottom: 0.5px solid rgb(229, 225, 225);
+  background-color: white;
+  /* max-width: 1400px;
+  margin: 0 auto; */
+}
+
+.crumbView {
+  padding: 1rem;
+  color: var(--text-color);
+}
+
+.grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 2rem;
+}
+
+.span-4 {
+  grid-column: span 4;
+}
+
+.p-5 {
+  padding: 3rem;
+}
+
+header>div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  margin-left: 3rem;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a.underline {
+  text-decoration: underline;
+  color: #006FD6;
+}
+
+/* header */
+.headerLink {
+  margin-right: 1.5rem;
+  padding: 1rem 1rem;
+  border-bottom: 4px solid transparent;
+}
+
+.headerLink.active {
+  border-bottom: 4px solid #006FD6;
+  color: #006FD6;
+  font-weight: bold;
+  background-color: #DEEFFF;
+}
+
+.headerLink :first-child {
+  margin-right: 0.6rem;
+}
+
+#searchInput {
+  display: flex;
+  align-items: center;
+  max-width: 180px;
+  border-radius: 8px;
+  padding: 0 1rem;
+  margin-right: 1.5rem;
+  border: 0.5px solid rgb(229, 225, 225);
+}
+
+#searchInput>input {
+  border: 0;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+#searchInput>input:focus {
+  outline: none;
+}
+
+.userAvatar {
+  margin-left: 1.5rem;
+}
+
+.userAvatar>div {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: #D8D8D8;
+  margin-right: 0.5rem;
 }
 
-.App-link {
-  color: #61dafb;
+/* card */
+.card {
+  box-shadow: 0px 4px 30px rgba(192, 192, 192, 0.25);
+  border-radius: 6px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.analytics {
+  padding-inline: 1rem;
+}
+
+.analytics .flex {
+  justify-content: space-between;
+  margin: 32px 0 0.7px;
+}
+
+.analytics h2 {
+  font-weight: 700;
+  font-size: 32px;
+}
+
+.mute,
+.analytics p {
+  color: #9696A0
+}
+
+.analytics p {
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.summary,
+.history {
+  padding: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1.75rem;
+}
+
+.mb-sm {
+  margin-bottom: 0.25rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.75rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.ml-2 {
+  margin-left: 1rem;
+}
+
+.small {
+  font-size: 0.8rem;
+}
+
+.summary .mb-1 img {
+  width: 17px;
+  height: 17px;
+}
+
+.summary .mb-1 p {
+  color: var(--text-color);
+  font-weight: 400;
+}
+
+thead tr {
+  background-color: #F5F5F5;
+}
+
+tbody tr:hover {
+  background-color: #F5F5F590;
+  cursor: pointer;
+}
+
+thead th {
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: #899198;
+}
+
+tbody tr {
+  font-weight: 400;
+  border-bottom: 1px solid #f2f1f1;
+}
+
+.emptyTable {
+  width: 10px;
+}
+
+.badge {
+  padding: 0.2rem 0.5rem;
+  width: auto;
+  font-weight: 700;
+  border-radius: 11px;
+}
+
+.risk,
+.badge {
+  font-size: 14px;
+}
+
+.badge-issues {
+  background-color: #FFF6DE;
+  color: #F4B400;
+}
+
+.badge-empty {
+  background-color: #F6F3FF;
+  color: #8C70FF;
+}
+
+.card.span-4 {
+  height: max-content;
+}
+
+.text-success {
+  color: #3AB65C;
+}
+
+.text-mid {
+  color: #8C70FF;
+}
+
+.text-danger {
+  color: #B63A3A;
+}
+
+.entries {
+  margin: 0;
+  padding-left: 13px;
+}
+
+.fw-bold {
+  font-weight: 700;
+}
+
+.timeline {
+  position: relative;
+  padding: 10px 10px 10px 20px;
+  max-width: 400px;
+}
+
+.timeline::before {
+  content: "";
+  width: 0.4px;
+  background-color: #C4C4C4;
+  position: absolute;
+  top: 24px;
+  bottom: 50px;
+  left: 5px;
+}
+
+.timeline>div {
+  position: relative;
+}
+
+.timeline>div::after {
+  content: "";
+  background: #707070;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: absolute;
+  top: 20%;
+  left: -19px;
 }
