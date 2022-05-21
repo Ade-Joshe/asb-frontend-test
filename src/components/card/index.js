@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { divisionSummary, email, fingerprint, info, journal, location, moduleHistory, phone } from '../../assets'
+import { divisionSummary, email, fingerprint, info, journal, location, phone } from '../../assets'
 
 export const AnalyticsCard = ({ count, label }) => {
     return (

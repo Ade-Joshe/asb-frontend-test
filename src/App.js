@@ -1,6 +1,6 @@
 import './App.css';
 import { circleDown, ellipses, low, mid, high, moduleHistory } from './assets';
-import { AnalyticsCard, BreadCrumb, DivisionSummarySection, Header, ModuleHistorySection } from './components';
+import { AnalyticsCard, BreadCrumb, DivisionSummarySection, Header } from './components';
 
 function App() {
 
@@ -72,6 +72,8 @@ function App() {
         return mid;
       case "high":
         return high;
+      default:
+        return null
     };
   };
 
@@ -83,13 +85,15 @@ function App() {
         return 'mid';
       case "high":
         return 'danger';
+      default:
+        return null
     };
   };
 
   const renderTableItem = (item, index) => (
     <tr key={index}>
       <td><input type={'checkbox'} /></td>
-      <td><img src={circleDown} /></td>
+      <td><img src={circleDown} alt={""} /></td>
       <td>{item.name}</td>
       <td>
         <p className='small mb-sm'>{item.state}</p>
