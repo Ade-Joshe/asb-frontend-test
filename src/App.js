@@ -1,68 +1,24 @@
+import { useEffect, useState } from 'react';
 import './App.css';
 import { circleDown, ellipses, low, mid, high, moduleHistory } from './assets';
 import { AnalyticsCard, BreadCrumb, DivisionSummarySection, Header } from './components';
+import { metricStats, tableHeaders } from './data/dummy';
 
 function App() {
+  const [newTableData, setNewTableData] = useState([]);
 
-  const tableData = [
-    {
-      name: "Courtney Henry",
-      state: "Lagos State",
-      address1: "775 Rolling Green Rd.",
-      issues: 0,
-      entries: 19,
-      risk: "Low"
-    }, {
-      name: "Darrell Steward",
-      state: "Lagos State",
-      address1: "7529 E. Pecan St.",
-      issues: 2,
-      entries: 10,
-      risk: "Mid"
-    }, {
-      name: "Cody Fisher",
-      state: "Lagos State",
-      address1: "3605 Parker Rd.",
-      issues: 0,
-      entries: 8,
-      risk: "Mid"
-    }, {
-      name: "Bessie Cooper",
-      state: "Lagos State",
-      address1: "775 Rolling Green Rd.",
-      issues: 1,
-      entries: 12,
-      risk: "High"
-    }, {
-      name: "Annette Black",
-      state: "Lagos State",
-      address1: "8080 Railroad St.",
-      issues: 0,
-      entries: 13,
-      risk: "Low"
-    }, {
-      name: "Jenny Wilson",
-      state: "Lagos State",
-      address1: "8080 Railroad St.",
-      issues: 5,
-      entries: 18,
-      risk: "High"
-    }, {
-      name: "Darlene Robertson",
-      state: "Lagos State",
-      address1: "3890 Poplar Dr.",
-      issues: 2,
-      entries: 6,
-      risk: "Mid"
-    }, {
-      name: "Ralph Edwards",
-      state: "Lagos State",
-      address1: "8558 Green Rd.",
-      issues: 0,
-      entries: 14,
-      risk: "Low"
-    }
-  ];
+  const getData = async () => {
+    await fetch('https://fakerapi.it/api/v1/custom?_quantity=10&firstName=firstName&lastName=lastName&city=city&buildingNumber=buildingNumber&streetName=streetName&streetAddress=streetAddress&card_expiration=card_expiration')
+      .then(response => response.json())
+      .then(res => {
+        if (res.code === 200) setNewTableData(res.data);
+        else console.log({ res })
+      })
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const renderRiskIcon = (risk) => {
     switch (risk.toLowerCase()) {
@@ -90,43 +46,56 @@ function App() {
     };
   };
 
-  const renderTableItem = (item, index) => (
-    <tr key={index}>
-      <td><input type={'checkbox'} /></td>
-      <td><img src={circleDown} alt={""} /></td>
-      <td>{item.name}</td>
-      <td>
-        <p className='small mb-sm'>{item.state}</p>
-        <p className='small mute'>{item.address1}</p>
-      </td>
-      <td><span className={`badge badge-${item.issues ? "issues" : "empty"}`}>{item.issues ? `${item.issues} issues found` : 'No issues'}</span></td>
-      <td>
-        <p className='small mb-sm fw-bold'>&#8226;  {item?.entries ?? 'No'} Unique Entries</p>
-        <p className='small mute'>Homogenous</p>
-      </td>
-      <td>
-        <div className='flex'>
-          <img src={renderRiskIcon(item.risk)} alt={""} />
-          <p className={`text-${renderiskColor(item.risk)} risk`}>{item.risk} Risk</p>
-        </div>
-      </td>
-      <td><img src={ellipses} alt={""} /></td>
-      <td />
-    </tr>
-  )
+  const renderTableItem = (item, index) => {
+
+    const isCardValid = () => {
+      const date = new Date();
+      date.setMonth(Number(item.card_expiration.split('/')[0]) - 1);
+      date.setFullYear(Number('20' + item.card_expiration.split('/')[1]));
+
+      return new Date().getTime() < date.getTime();
+    }
+
+    return (
+      <tr key={index}>
+        <td><input type={'checkbox'} /></td>
+        <td><img src={circleDown} alt={""} /></td>
+        <td>{`${item.firstName} ${item.lastName}`}</td>
+        <td>
+          <p className='small mb-sm'>{item.city}</p>
+          <p className='small mute ellipsis-text'>{`${item.buildingNumber} ${item.streetName} ${item.streetAddress}`}</p>
+        </td>
+        <td>{item.card_expiration}</td>
+        <td><span className={`badge noWrap badge-${!isCardValid() ? "issues" : "empty"}`}>{!isCardValid() ? `1 issues found` : 'No issues'}</span></td>
+        <td>
+          <p className='small mb-sm fw-bold noWrap'>&#8226; No Unique Entries</p>
+          <p className='small mute'>Homogenous</p>
+        </td>
+        <td>
+          <div className='flex'>
+            <img src={renderRiskIcon("Low")} alt={""} />
+            <p className={`text-${renderiskColor("Low")} risk noWrap`}>{"Low"} Risk</p>
+          </div>
+        </td>
+        <td><img src={ellipses} alt={""} /></td>
+        {/* <td /> */}
+      </tr>
+    );
+  };
 
   return (
     <div className="App">
       <Header />
+
       <main className='container'>
-        <BreadCrumb parentRoute={"Divisions"} currentRoute={"Module"} />
+        <BreadCrumb routes={[{ label: "Divisions" }, { label: "Module" }]} />
 
         <div className='grid-5 mb-3'>
-          <AnalyticsCard count={"31454"} label={"Ongoing metric"} />
-          <AnalyticsCard count={"2344"} label={"Past metric"} />
-          <AnalyticsCard count={"14224"} label={"Missed metric"} />
-          <AnalyticsCard count={"635"} label={"Failed metric"} />
-          <AnalyticsCard count={"11334"} label={"Pending metric"} />
+          {
+            metricStats.map((item, index) => (
+              <AnalyticsCard count={item.metricValue} label={item.label} />
+            ))
+          }
         </div>
 
         <div className='grid-5'>
@@ -162,19 +131,13 @@ function App() {
             <table>
               <thead>
                 <tr>
-                  <th className='emptyTable'><input type={'checkbox'} /></th>
-                  <th className='emptyTable'></th>
-                  <th>NAME</th>
-                  <th>LOCATION</th>
-                  <th>STATUS</th>
-                  <th>ENTRIES</th>
-                  <th>RISK PROFILE</th>
-                  <th></th>
-                  <th></th>
+                  {tableHeaders.map(({ className = '', label }, index) => (
+                    <th key={index} className={className}>{label}</th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {tableData.map((item, index) => (
+                {newTableData.map((item, index) => (
                   renderTableItem(item, index)
                 ))}
               </tbody>

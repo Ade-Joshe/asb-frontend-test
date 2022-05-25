@@ -1,12 +1,16 @@
 import React from 'react'
 import { arrowRight } from '../../assets'
 
-export const BreadCrumb = ({ parentRoute, currentRoute }) => {
+export const BreadCrumb = ({routes}) => {
     return (
         <div className='flex crumbView'>
-            <p>{parentRoute}&nbsp;</p>
-            <img src={arrowRight} alt={""} />
-            <p>&nbsp;{currentRoute}</p>
+            {routes.map((item, index) => (
+                <>
+                    <p key={index}>{item.label}&nbsp; </p>
+                    {index !== (routes.length - 1) && <img src={arrowRight} alt={""} />}
+                </>
+            ))}
+
         </div>
     )
 }
